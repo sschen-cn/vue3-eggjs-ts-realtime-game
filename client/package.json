@@ -1,0 +1,30 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "dependencies": {
+    "@types/socket.io-client": "^1.4.34",
+    "core-js": "^3.6.5",
+    "lib-flexible": "^0.3.2",
+    "postcss-px2rem-exclude": "^0.0.6",
+    "vue": "^3.0.0",
+    "vue-router": "^4.0.0-0",
+    "vue-socket.io": "^3.0.10"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-router": "~4.5.0",
+    "@vue/cli-plugin-typescript": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/compiler-sfc": "^3.0.0",
+    "pug": "^3.0.0",
+    "pug-plain-loader": "^1.0.0",
+    "stylus": "^0.54.8",
+    "stylus-loader": "3.0.2",
+    "typescript": "~3.9.3"
+  }
+}

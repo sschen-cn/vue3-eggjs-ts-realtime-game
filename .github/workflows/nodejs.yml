@@ -1,0 +1,55 @@
+name: 打包应用并上传阿里云
+
+# 作用分支
+on:
+  push:
+    branches: [ master ]
+  # pull_request:
+  #   branches: [ master ]
+  # schedule:
+  #   - cron: '0 2 * * *'
+# 任务
+jobs:
+  build:
+    # runs-on 指定job任务运行所需要的虚拟机环境（必填）
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: 14
+        # os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest]
+
+    steps:
+    # 获取源码
+    - name: 迁出代码
+      uses: actions/checkout@master
+    # 安装Node.js
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    # 安装依赖
+    - name: 安装依赖
+      # run: npm i -g npminstall && npminstall
+      run: npm install
+    # 打包
+    - name: 打包
+      run: npm run build
+    # 上传阿里云
+    - name: 发布到阿里云
+      uses: easingthemes/ssh-deploy@v2.1.1
+      env:
+        # 私钥
+        SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+        # scp参数
+        ARGS: "-avzr --delete"
+        # 源目录
+        SOURCE: "dist"
+        # 服务器ip
+        REMOTE_HOST: "121.196.197.46"
+        # 用户
+        REMOTE_USER: "root"
+        # 目标地址
+        TARGET: "/var/www/game"

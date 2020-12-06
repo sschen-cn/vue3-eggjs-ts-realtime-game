@@ -1,0 +1,14 @@
+{
+  "extends": "eslint-config-egg/typescript",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "semi": "off",
+    "@typescript-eslint/semi": [
+      "off"
+    ],
+    "no-unused-vars": "warn",
+    "@typescript-eslint/no-unused-vars": "warn"
+  }
+}
