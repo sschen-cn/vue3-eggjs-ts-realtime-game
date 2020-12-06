@@ -34,8 +34,8 @@ jobs:
         
     # 安装依赖
     - name: 安装依赖
-      run: npm i -g npminstall && npminstall
-      # run: npm install
+      # run: npm i -g npminstall && npminstall
+      run: cd ./client && npm install
       
     # 打包
     - name: 打包
