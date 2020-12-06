@@ -24,12 +24,14 @@ jobs:
     steps:
     # 获取源码
     - name: 迁出代码
-      uses: actions/checkout@v2# # 安装Node.js
-      
+      uses: actions/checkout@v2
+
+    # 安装Node.js
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+        
     # 安装依赖
     - name: 安装依赖
       run: npm i -g npminstall && npminstall
