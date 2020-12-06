@@ -10,7 +10,7 @@ on:
   #   - cron: '0 2 * * *'
 # 任务
 jobs:
-  build:
+  deploy:
     # runs-on 指定job任务运行所需要的虚拟机环境（必填）
     runs-on: ${{ matrix.os }}
 
@@ -24,32 +24,43 @@ jobs:
     steps:
     # 获取源码
     - name: 迁出代码
-      uses: actions/checkout@master
-    # 安装Node.js
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    # 安装依赖
-    - name: 安装依赖
-      # run: npm i -g npminstall && npminstall
-      run: npm install
-    # 打包
-    - name: 打包
-      run: cd ./client && npm run build
-    # 上传阿里云
-    - name: 发布到阿里云
-      uses: easingthemes/ssh-deploy@v2.1.1
+      uses: actions/checkout@v2
+      
+    - name: Deploy to Server # 2. deploy to remote server
+      uses: AEnterprise/rsync-deploy@v1.0 # Use a third party action (https://github.com/AEnterprise/rsync-deploy)
       env:
-        # 私钥
-        SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
-        # scp参数
-        ARGS: "-avzr --delete"
-        # 源目录
-        SOURCE: "dist"
-        # 服务器ip
-        REMOTE_HOST: "121.196.197.46"
-        # 用户
-        REMOTE_USER: "root"
-        # 目标地址
-        TARGET: "/var/www/game"
+        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }} # use pre-configured secret (the private key)
+        ARGS: -avz --delete # must have this variable
+        SERVER_PORT: "22" # SSH port
+        FOLDER: ./ # folder to push (./ is the root of current repo)
+        SERVER_IP: ${{ secrets.SSH_HOST }} # use pre-configured ssh_host value (e.g., IP or domain.com）
+        USERNAME: ${{ secrets.SSH_USERNAME }} # use pre-configured ssh_username value
+        SERVER_DESTINATION: /var/www/game/ # put your repo files on this directory of the remote server
+    # # 安装Node.js
+    # - name: Use Node.js ${{ matrix.node-version }}
+    #   uses: actions/setup-node@v1
+    #   with:
+    #     node-version: ${{ matrix.node-version }}
+    # # 安装依赖
+    # - name: 安装依赖
+    #   # run: npm i -g npminstall && npminstall
+    #   run: npm install
+    # # 打包
+    # - name: 打包
+    #   run: cd ./client && npm run build
+    # 上传阿里云
+    # - name: 发布到阿里云
+    #   uses: easingthemes/ssh-deploy@v2.1.1
+    #   env:
+    #     # 私钥
+    #     SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+    #     # scp参数
+    #     ARGS: "-avzr --delete"
+    #     # 源目录
+    #     SOURCE: "dist"
+    #     # 服务器ip
+    #     REMOTE_HOST: "121.196.197.46"
+    #     # 用户
+    #     REMOTE_USER: "root"
+    #     # 目标地址
+    #     TARGET: "/var/www/game"
