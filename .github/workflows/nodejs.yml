@@ -26,6 +26,10 @@ jobs:
     - name: 迁出代码
       uses: actions/checkout@v2
       
+    # 打包
+    - name: 打包
+      run: cd ./client && npm run build
+
     - name: Deploy to Server # 2. deploy to remote server
       uses: AEnterprise/rsync-deploy@v1.0 # Use a third party action (https://github.com/AEnterprise/rsync-deploy)
       env:
@@ -45,9 +49,6 @@ jobs:
     # - name: 安装依赖
     #   # run: npm i -g npminstall && npminstall
     #   run: npm install
-    # # 打包
-    # - name: 打包
-    #   run: cd ./client && npm run build
     # # 上传阿里云
     # - name: 发布到阿里云
     #   uses: easingthemes/ssh-deploy@v2.1.1
