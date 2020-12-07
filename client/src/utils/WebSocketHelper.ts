@@ -59,7 +59,9 @@ class SocketNotifications {
     // 开启新的 Socket 连接
     console.log(`建立socket连接: ${_SERVER_ADDRESS}`)
     try {
-      SocketNotifications._ws = socketio.connect(_SERVER_ADDRESS)
+      SocketNotifications._ws = socketio.connect(_SERVER_ADDRESS, {
+        transports: ['websocket']
+      })
       SocketNotifications._isOn = true
     } catch (error) {
       console.log(`建立socket连接失败，原因：${error}`)

@@ -10,6 +10,11 @@ export default (appInfo: EggAppInfo) => {
   // add your egg config in here
   config.middleware = []
 
+  config.cors = {
+    origin: '*', // 匹配规则  域名+端口  *则为全匹配
+    allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH',
+  }
+
   // add your special config in here
   const bizConfig = {
     redis: {
