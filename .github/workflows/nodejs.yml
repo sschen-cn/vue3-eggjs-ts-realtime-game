@@ -43,7 +43,7 @@ jobs:
       with:
         host: ${{ secrets.SSH_HOST }}
         username: ${{ secrets.SSH_USERNAME }}
-        passphrase: ${{ secrets.DEPLOY_KEY }}
+        key: ${{ secrets.DEPLOY_KEY }}
         command_timeout: 5m
         script: |
           cd /var/www/game/ && git pull origin master
