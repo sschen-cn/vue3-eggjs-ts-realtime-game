@@ -1,7 +1,7 @@
 import socketio from 'socket.io-client'
 
 const DEV_SERVER_ADDRESS: string = "http://127.0.0.1:7001/tictactoe"
-const PROD_SERVER_ADDRESS: string = "http://game.artifact4u.com/tictactoe"
+const PROD_SERVER_ADDRESS: string = "http://ws.game.artifact4u.com/tictactoe"
 const _SERVER_ADDRESS = process.env.NODE_ENV === 'development' ? DEV_SERVER_ADDRESS : process.env.NODE_ENV === 'production' ? PROD_SERVER_ADDRESS : DEV_SERVER_ADDRESS
 
 class ExchangeMsg {

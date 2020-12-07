@@ -22,22 +22,6 @@ jobs:
         os: [ubuntu-latest]
 
     steps:
-    # 获取源码
-    # - name: 迁出代码
-    #   uses: actions/checkout@v2
-
-    # 拉取代码
-    # - name: Deploy to Server # 2. deploy to remote server
-    #   uses: AEnterprise/rsync-deploy@v1.0 # Use a third party action (https://github.com/AEnterprise/rsync-deploy)
-    #   env:
-    #     DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }} # use pre-configured secret (the private key)
-    #     ARGS: -avz --delete # must have this variable
-    #     SERVER_PORT: "22" # SSH port
-    #     FOLDER: ./ # folder to push (./ is the root of current repo)
-    #     SERVER_IP: ${{ secrets.SSH_HOST }} # use pre-configured ssh_host value (e.g., IP or domain.com）
-    #     USERNAME: ${{ secrets.SSH_USERNAME }} # use pre-configured ssh_username value
-    #     SERVER_DESTINATION: /var/www/game # put your repo files on this directory of the remote server
-    # 远程服务器执行命令
     - name: executing remote ssh commands using passphrase
       uses: appleboy/ssh-action@master
       with:
@@ -47,30 +31,5 @@ jobs:
         command_timeout: 5m
         script: |
           cd /var/www/game/ && git pull origin master
-          cd /var/www/game/server/ && npm run ci &&  npm run start
-          cd /var/www/game/client/ && yarn build
-        
-    # # 安装依赖
-    # - name: 安装依赖
-    #   # run: npm i -g npminstall && npminstall
-    #   run: cd ./client && npm install
-      
-    # # 打包
-    # - name: 打包
-    #   run: cd ./client && npm run build
-    # # 上传阿里云
-    # - name: 发布到阿里云
-    #   uses: easingthemes/ssh-deploy@v2.1.1
-    #   env:
-    #     # 私钥
-    #     SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_KEY }}
-    #     # scp参数
-    #     ARGS: "-avzr --delete"
-    #     # 源目录
-    #     SOURCE: "dist"
-    #     # 服务器ip
-    #     REMOTE_HOST: "121.196.197.46"
-    #     # 用户
-    #     REMOTE_USER: "root"
-    #     # 目标地址
-    #     TARGET: "/var/www/game"
+          cd /var/www/game/server/ && yarn && yarn ci && yarn stop && yarn start
+          cd /var/www/game/client/ && yarn && yarn build
