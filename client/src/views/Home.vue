@@ -30,7 +30,6 @@ import {
   toRefs,
 } from 'vue'
 import router from '../router'
-// import socket from '../utils/WebSocketHelper'
 import {
   ExchangeEvent,
   Player,

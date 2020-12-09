@@ -28,8 +28,8 @@ section.room
       .result {{ result }}
 </template>
 <script lang="ts">
-import router from '@/router'
-import { ExchangeEvent, socketController } from '@/utils/SocketController'
+import router from '../router'
+import { ExchangeEvent, socketController } from '../utils/SocketController'
 import {
   computed,
   defineComponent,
