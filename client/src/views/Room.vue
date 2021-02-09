@@ -29,7 +29,7 @@ section.room
 </template>
 <script lang="ts">
 import router from '../router'
-import { ExchangeEvent, socketController } from '../utils/SocketController'
+import { ExchangeEvent, socketController } from '../utils/tictactoeSocketController'
 import {
   computed,
   defineComponent,

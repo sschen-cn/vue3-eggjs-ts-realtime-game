@@ -1,9 +1,5 @@
 import socketio from 'socket.io-client'
 
-const DEV_SERVER_ADDRESS: string = "http://127.0.0.1:7001/tictactoe"
-const PROD_SERVER_ADDRESS: string = "http://ws.game.artifact4u.com/tictactoe"
-const _SERVER_ADDRESS = process.env.NODE_ENV === 'development' ? DEV_SERVER_ADDRESS : process.env.NODE_ENV === 'production' ? PROD_SERVER_ADDRESS : DEV_SERVER_ADDRESS
-
 class ExchangeMsg {
   _action: string = ''
   _payload: object = {}
@@ -53,13 +49,13 @@ class SocketNotifications {
    * 
    * 初始化 Socket 连接
    */
-  public async initCommunication() {
+  public async initCommunication(serverAddress: string) {
     // 关闭之前的 Socket 连接
     this.reset()
     // 开启新的 Socket 连接
-    console.log(`建立socket连接: ${_SERVER_ADDRESS}`)
+    console.log(`建立socket连接: ${serverAddress}`)
     try {
-      SocketNotifications._ws = socketio.connect(_SERVER_ADDRESS, {
+      SocketNotifications._ws = socketio.connect(serverAddress, {
         transports: ['websocket']
       })
       SocketNotifications._isOn = true

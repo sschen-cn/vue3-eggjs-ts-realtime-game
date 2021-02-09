@@ -34,7 +34,9 @@ import {
   ExchangeEvent,
   Player,
   socketController,
-} from '../utils/SocketController'
+} from '../utils/tictactoeSocketController'
+import { useApi } from '../api'
+import useCurrentIntance from '../hooks/useCurrentInstance'
 export default {
   name: 'Login',
   setup() {
@@ -42,12 +44,17 @@ export default {
       username: string
       loginState: boolean
       player_list: Array<Player>
+      cancel: null | Function
     }
     const data: DataProps = reactive({
       username: '',
       loginState: false,
       player_list: [],
+      cancel: null,
     })
+
+    const { globalProperties } = useCurrentIntance()
+    console.log(globalProperties)
 
     const handleClickLogin = async () => {
       await socketController.linkStart(data.username)

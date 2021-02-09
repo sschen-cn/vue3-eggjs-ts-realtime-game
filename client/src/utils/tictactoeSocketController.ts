@@ -1,6 +1,10 @@
 import router from "@/router"
 import { socket, ExchangeMsg } from "./WebSocketHelper"
 
+const DEV_SERVER_ADDRESS: string = "http://127.0.0.1:7001/tictactoe"
+const PROD_SERVER_ADDRESS: string = "http://ws.game.artifact4u.com/tictactoe"
+const _SERVER_ADDRESS = process.env.NODE_ENV === 'development' ? DEV_SERVER_ADDRESS : process.env.NODE_ENV === 'production' ? PROD_SERVER_ADDRESS : DEV_SERVER_ADDRESS
+
 enum ExchangeEvent {
   JOIN = 'join',
   PLAYER_LIST = 'player_list',
@@ -63,10 +67,10 @@ class SocketController {
    */
   public async linkStart(name: string) {
     if (!this._isOn) {
-      await socket.initCommunication()
+      await socket.initCommunication(_SERVER_ADDRESS)
       // 监听连接建立成功的事件
       socket.onMessageReceived('connect', () => {
-        this._playerName = name !== '' ? name : this.randomString(8)
+        this._playerName = name ? name : this.randomString(8)
         this._playerID = socket.id
         this._isOn = true
         console.log(`socket连接已建立成功 socketid: ${socket.id} \n playerName:${this._playerName}`)

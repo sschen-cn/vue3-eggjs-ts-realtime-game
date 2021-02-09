@@ -17,22 +17,22 @@ export default (appInfo: EggAppInfo) => {
 
   // add your special config in here
   const bizConfig = {
-    redis: {
-      client: {
-        port: 6379,
-        host: '127.0.0.1',
-        password: '',
-        db: 0,
-      },
-    },
+    // redis: {
+    //   client: {
+    //     port: 6379,
+    //     host: '127.0.0.1',
+    //     password: '',
+    //     db: 0,
+    //   },
+    // },
     io: {
       init: {
         wsEngine: 'ws',
       },
-      redis: {
-        host: '127.0.0.1',
-        port: 6379,
-      },
+      // redis: {
+      //   host: '127.0.0.1',
+      //   port: 6379,
+      // },
       namespace: {
         '/tictactoe': {
           connectionMiddleware: [ 'auth' ],
