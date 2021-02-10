@@ -18,6 +18,10 @@ section.login
           v-if='player.name != socketController._playerName',
           @click='handleClickInvite(player)'
         )
+  iButton(
+    text='Draw something'
+    @click='handleClickDraw'
+  )
 </template>
 
 <script lang="ts">
@@ -68,6 +72,12 @@ export default {
       })
     }
 
+    const handleClickDraw = () => {
+      router.push({
+        name: 'DrawSome',
+      })
+    }
+
     const _onHomePageReceived = (msg: string) => {
       const message = JSON.parse(msg)
       const action = message.data.action
@@ -100,6 +110,7 @@ export default {
       ...refData,
       handleClickLogin,
       handleClickInvite,
+      handleClickDraw,
       socketController,
     }
   },
@@ -122,6 +133,10 @@ export default {
   margin 5px
   width 24px
   height 24px
+.login
+  .login-content
+    margin 0 auto
+    max-width 800PX
 .login .login-content .button
   margin 0 auto
 .player-list-wrapper

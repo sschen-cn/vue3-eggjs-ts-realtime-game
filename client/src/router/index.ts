@@ -2,6 +2,7 @@ import { defineAsyncComponent } from 'vue'
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/Home.vue'
 import Room from '../views/Room.vue'
+import DrawSome from '../views/DrawSome/index.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -22,6 +23,12 @@ const routes: Array<RouteRecordRaw> = [
     //   delay: 2000
     // })
     component: Room
+  },
+  {
+    path: '/DrawSome',
+    name: 'DrawSome',
+    meta: { index: 2 },
+    component: DrawSome
   }
 ]
 
