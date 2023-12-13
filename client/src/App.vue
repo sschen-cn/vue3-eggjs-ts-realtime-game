@@ -2,7 +2,7 @@
 .main
   router-view(v-slot='{ Component }')
     transition(:name='transitionName')
-      keep-alive(include="")
+      keep-alive(include="home")
         component(:is='Component')
 </template>
 

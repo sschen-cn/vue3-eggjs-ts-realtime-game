@@ -28,8 +28,11 @@ section.room
       .result {{ result }}
 </template>
 <script lang="ts">
-import router from '../router';
-import { ExchangeEvent, socketController } from '../utils/tictactoeSocketController';
+import router from '../router'
+import {
+  ExchangeEvent,
+  socketController,
+} from '../utils/tictactoeSocketController'
 import {
   computed,
   defineComponent,
@@ -39,117 +42,111 @@ import {
   reactive,
   toRefs,
   watch,
-} from 'vue';
-import { onBeforeRouteLeave, useRoute } from 'vue-router';
+} from 'vue'
+import { onBeforeRouteLeave, useRoute } from 'vue-router'
 const RoomComponent = defineComponent({
   name: 'room',
   setup() {
-    const route = useRoute();
+    const route = useRoute()
     interface DataProps {
-      grids: Array<string>;
-      character: string;
-      // resign: boolean;
-      opCharacter: string;
-      moveCharacter: string;
-      canMove: boolean;
-      tips: string;
-      result: string;
+      grids: Array<string>
+      character: string
+      resign: boolean
+      opCharacter: string
+      moveCharacter: string
+      canMove: boolean
+      tips: string
+      result: string
     }
     const data: DataProps = reactive({
       grids: ['', '', '', '', '', '', '', '', ''], // 棋盘数据
       character: route.params.character as string, // 本方执子
       resign: false, // 放弃标记
       opCharacter: computed(() => {
-        return data.character === 'O' ? 'X' : 'O';
+        return data.character === 'O' ? 'X' : 'O'
       }), // 对方执子
       canMove: computed(() => {
-        let xcount = data.grids.reduce((a, v) => (v === 'X' ? a + 1 : a + 0), 0);
-        let ocount = data.grids.reduce((a, v) => (v === 'O' ? a + 1 : a + 0), 0);
+        let xcount = data.grids.reduce((a, v) => (v === 'X' ? a + 1 : a + 0), 0)
+        let ocount = data.grids.reduce((a, v) => (v === 'O' ? a + 1 : a + 0), 0)
         if (ocount <= xcount) {
-          return data.character === 'O';
+          return data.character === 'O'
         } else {
-          return data.character === 'X';
+          return data.character === 'X'
         }
       }),
       moveCharacter: computed(() => {
         return data.canMove
           ? data.character
           : data.character === 'O'
-            ? 'X'
-            : 'O';
+          ? 'X'
+          : 'O'
       }), // 当前行子
       tips: computed(() => {
         return data.canMove
           ? `(${socketController._playerName}) Your turn`
-          : `(${route.params.againstname}) Opponent's turn`;
+          : `(${route.params.againstname}) Opponent's turn`
       }),
       result: '',
-    });
-    const refData = toRefs(data);
+    })
+    const refData = toRefs(data)
     watch(
       () => data.moveCharacter,
       (oldVal, newVal) => {
-        let count = data.grids.indexOf('');
-        let result = check(data.grids, newVal);
+        let count = data.grids.indexOf('')
+        let result = check(data.grids, newVal)
         if (result) {
           if (newVal === data.character) {
-            data.result = `You win`;
+            data.result = `You win`
           } else {
-            data.result = `Opponent win`;
+            data.result = `Opponent win`
           }
         } else {
           if (count === -1) {
-            data.result = `Half a match`;
+            data.result = `Half a match`
           }
         }
       }
-    );
+    )
 
-    onActivated(() => {
-
-    });
-
-    onActivated(() => {
+    onMounted(() => {
       if (!socketController._playerName) {
-        router.back();
+        router.back()
       } else {
-        console.log(`onActivated`);
-        // data.resign = true;
-        socketController.addListener(_onRoomPageReceived);
+        data.resign = true
+        socketController.addListener(_onRoomPageReceived)
       }
-    });
-    onBeforeRouteLeave(() => {
-      console.log(`onBeforeUnmount`);
-      // if (data.resign) {
-      console.log(`放弃`);
-      socketController.resign();
-      // }
-      socketController.removeListener(_onRoomPageReceived);
-    });
+    })
+    onBeforeUnmount(() => {
+      if (data.resign) {
+        console.log(`放弃`)
+        socketController.resign()
+      }
+      socketController.removeListener(_onRoomPageReceived)
+    })
     const _onRoomPageReceived = (msg: string) => {
-      const message = JSON.parse(msg);
-      const action = message.data.action;
-      const payload = message.data.payload;
+      const message = JSON.parse(msg)
+      const action = message.data.action
+      const payload = message.data.payload
       switch (action) {
         case ExchangeEvent.RESIGN:
-          console.log(`对方放弃`);
-          // data.resign = false;
-          router.back();
-          break;
+          console.log(`对方放弃`)
+          data.resign = false
+          router.back()
+          break
         case ExchangeEvent.PLAY:
-          data.grids = payload.grids;
+          data.grids = payload.grids
         default:
-          break;
+          break
       }
-    };
+    }
     const handleClick = (index: number) => {
       if (data.grids[index] === '' && data.canMove && data.result === '') {
-        data.grids[index] = data.character;
-        socketController.play(data.grids);
+        data.grids[index] = data.character
+        socketController.play(data.grids)
       }
-    };
+    }
     function check(grids: Array<string>, character: string) {
-      let r = false;
+      let r = false
       // 检查横向
       for (let i = 0; i < 9; i = i + 3) {
         if (
@@ -157,7 +154,7 @@ const RoomComponent = defineComponent({
           grids[i + 1] == character &&
           grids[i + 2] == character
         ) {
-          r = true;
+          r = true
         }
       }
       // 检查竖向
@@ -167,7 +164,7 @@ const RoomComponent = defineComponent({
           grids[i + 3] == character &&
           grids[i + 6] == character
         ) {
-          r = true;
+          r = true
         }
       }
       // 检查斜向
@@ -179,19 +176,19 @@ const RoomComponent = defineComponent({
           grids[4] == character &&
           grids[6] == character)
       ) {
-        r = true;
+        r = true
       }
-      return r;
+      return r
     }
 
     return {
       ...refData,
       handleClick,
       socketController,
-    };
+    }
   },
-});
-export default RoomComponent;
+})
+export default RoomComponent
 </script>
 <style lang="stylus" scope>
 .room

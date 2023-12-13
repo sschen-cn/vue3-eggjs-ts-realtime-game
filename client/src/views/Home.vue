@@ -38,7 +38,7 @@ import {
 import { useApi } from '../api'
 import useCurrentIntance from '../hooks/useCurrentInstance'
 export default {
-  name: 'Login',
+  name: 'home',
   setup() {
     interface DataProps {
       username: string
