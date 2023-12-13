@@ -30,6 +30,8 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           command_timeout: 5m
           script: |
+            cd /var/www/game/ && git pull origin master
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
-            cd /var/www/game/server/ && yarn
+            cd /var/www/game/server/ && yarn && yarn ci && yarn stop && yarn start
+            cd /var/www/game/client/ && yarn && yarn build
