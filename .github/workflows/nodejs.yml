@@ -32,4 +32,4 @@ jobs:
           script: |
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
-            cd /var/www/game/server/ && npm i yarn -g && yarn
+            cd /var/www/game/server/ && yarn
