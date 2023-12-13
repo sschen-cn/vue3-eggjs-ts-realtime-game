@@ -30,4 +30,4 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           command_timeout: 5m
           script: |
-            cd /var/www/game/server/ && yarn
+            cd /var/www/game/server/ && npm i yarn -g && yarn
